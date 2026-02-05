@@ -1,33 +1,133 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <title>Guess The Word</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css" />
+  <title>Guess The Word</title>
 </head>
 
 <body>
+  <div class="wrapper">
 
-    <div class="wrapper">
-        <h1>Guess Word Game</h1>
-        <div class="content">
-            <input type="text" class="type-input" maxlength="1">
-            <div class="word"></div>
-            <div class="info">
-                <p class="guess">Guesses: <span></span></p>
-                <p class="wrong">MistakesL: <span></span></p>
-                <p class="hint">Hint: <span></span></p>
-            </div>
-            <div class="buttons">
-                <button class="reset">Reset Game</button>
-                <button class="showhint">Show Hint</button>
-            </div>
-        </div>
+    <div class="header">
+      <h1>Guess Word Game</h1>
+      <p>Type letters or tap the keyboard to reveal the hidden word.</p>
     </div>
 
-    <script src="words-db.js"></script>
-    <script src="index.js"></script>
-</body>
+    <div class="top-row">
+      <div class="controls">
 
+        <div class="control">
+          <label for="category">Category</label>
+          <select id="category"></select>
+        </div>
+
+        <div class="control">
+          <label for="difficulty">Difficulty</label>
+          <select id="difficulty">
+            <option value="easy">Easy (8 guesses)</option>
+            <option value="medium" selected>Medium (6 guesses)</option>
+            <option value="hard">Hard (4 guesses)</option>
+          </select>
+        </div>
+
+        <div class="control">
+          <label>Hint</label>
+          <button class="chip" id="hintBtn">Show Hint</button>
+        </div>
+
+        <div class="control">
+          <label>Sound</label>
+          <button class="chip" id="soundBtn">Sound: ON</button>
+        </div>
+
+        <div class="control">
+          <label>Game</label>
+          <button class="chip primary" id="resetBtn">Reset</button>
+        </div>
+
+      </div>
+
+      <div class="side">
+        <div class="stats">
+          <div class="stat">
+            <span class="k">Streak</span>
+            <span class="v" id="streakVal">0</span>
+          </div>
+          <div class="stat">
+            <span class="k">Best Streak</span>
+            <span class="v" id="bestStreakVal">0</span>
+          </div>
+          <div class="stat">
+            <span class="k">Wins</span>
+            <span class="v" id="winsVal">0</span>
+          </div>
+          <div class="stat">
+            <span class="k">Games</span>
+            <span class="v" id="gamesVal">0</span>
+          </div>
+        </div>
+
+        <div class="hangman-card">
+          <svg class="hangman" viewBox="0 0 220 220" aria-label="Hangman drawing">
+            <!-- frame -->
+            <line class="frame" x1="30" y1="200" x2="190" y2="200"></line>
+            <line class="frame" x1="70" y1="200" x2="70" y2="30"></line>
+            <line class="frame" x1="68" y1="30" x2="150" y2="30"></line>
+            <line class="frame" x1="150" y1="30" x2="150" y2="55"></line>
+
+            <!-- parts -->
+            <circle class="part" data-step="1" cx="150" cy="75" r="18"></circle>
+            <line class="part" data-step="2" x1="150" y1="93" x2="150" y2="145"></line>
+            <line class="part" data-step="3" x1="150" y1="110" x2="125" y2="130"></line>
+            <line class="part" data-step="4" x1="150" y1="110" x2="175" y2="130"></line>
+            <line class="part" data-step="5" x1="150" y1="145" x2="130" y2="175"></line>
+            <line class="part" data-step="6" x1="150" y1="145" x2="170" y2="175"></line>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <div class="content">
+      <input type="text" class="type-input" maxlength="1" autocomplete="off" />
+
+      <div class="word"></div>
+
+      <div class="info">
+        <p class="guess">Guesses left: <span class="guess-left"></span></p>
+
+        <p class="wrong">
+          Mistakes (<span class="mistake-count">0</span>):
+          <span class="wrong-letters">—</span>
+        </p>
+
+        <p class="hint">Hint: <span class="hint-text">••••</span></p>
+      </div>
+
+      <div class="keyboard" aria-label="On-screen keyboard"></div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal" id="resultModal" aria-hidden="true">
+      <div class="modal-card" role="dialog" aria-modal="true">
+        <div class="modal-title" id="modalTitle">You won!</div>
+        <div class="modal-text">The word was:</div>
+        <div class="modal-word" id="modalWord">banana</div>
+
+        <div class="modal-actions">
+          <button class="play-again" id="playAgainBtn">Play Again</button>
+          <button class="close-modal" id="closeModalBtn">Close</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Confetti -->
+    <div class="confetti" id="confetti"></div>
+
+  </div>
+
+  <script src="words-db.js"></script>
+  <script src="index.js"></script>
+</body>
 </html>
